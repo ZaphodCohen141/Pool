@@ -1,16 +1,20 @@
 package com.Pool.controller;
 
 import com.Pool.model.Question;
-import com.Pool.model.ReplyRequest;
+import com.Pool.model.Reply;
 import com.Pool.service.PoolService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/question")
+@RequestMapping("/pool")
 public class PoolController {
     @Autowired
     private PoolService poolService;
+    @Autowired
+    ObjectMapper objectMapper;
 
     @PostMapping(value = "/create_question")
     public Integer createQuestion(@RequestBody Question question){
@@ -31,9 +35,9 @@ public class PoolController {
         poolService.deleteQuestionById(qId);
     }
 
-    @PostMapping(value = "/get_reply")
-    public void createReply(ReplyRequest replyRequest){
-        poolService.createReply(replyRequest);
+    @PostMapping(value = "/create_reply")
+    public void createReply(@RequestBody Reply reply) throws JsonProcessingException {
+        poolService.createReply(reply);
     }
 
 }

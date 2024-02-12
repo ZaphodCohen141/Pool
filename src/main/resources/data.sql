@@ -10,11 +10,10 @@ CREATE TABLE users(
 );
 
 CREATE TABLE replies(
-    user_id INT NOT NULL,
     question_id INT NOT NULL,
+    user_id INT NOT NULL,
     answer_id INT NOT NULL,
-    PRIMARY KEY(question_id),
-    FOREIGN KEY(user_id) REFERENCES users(id)
+    PRIMARY KEY(question_id)
 );
 
 CREATE TABLE questions(
@@ -31,7 +30,8 @@ INSERT INTO questions (question_text,ans_1,ans_2,ans_3,ans_4)
 VALUES('Where are we going?','a. Day in, day out','b. The night is young',
 'c. Need for survival is clear','d. Just so you know we don''t');
 
-
+INSERT INTO replies (question_id,user_id,answer_id)
+VALUES (1,1,2),(2,1,3),(3,1,1),(4,1,5);
 --CREATE TABLE a_to_q _1 (
 --    user_id int NOT NULL,
 --    q_id int NOT NULL,

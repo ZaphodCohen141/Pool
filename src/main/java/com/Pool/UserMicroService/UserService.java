@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
         url = "${user_micro_service.url}"
 )
 public interface UserService {
-    @GetMapping
+    @GetMapping(path = "user/get_user{user_id}")
     User getUser (@RequestParam Integer id);
 
 

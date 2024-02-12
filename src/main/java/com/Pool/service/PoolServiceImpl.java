@@ -1,11 +1,14 @@
 package com.Pool.service;
 
 import com.Pool.UserMicroService.User;
-import com.Pool.UserMicroService.UserService;
+import com.Pool.UserMicroService.UserController;
 import com.Pool.model.Question;
+import com.Pool.model.Reply;
 import com.Pool.model.ReplyRequest;
 import com.Pool.model.ReplyResponse;
 import com.Pool.repository.PoolRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,17 +16,19 @@ import org.springframework.stereotype.Service;
 public class PoolServiceImpl implements PoolService {
     @Autowired
     private PoolRepository poolRepository;
-
     @Autowired
-    UserService userService;
+    UserController userController;
+    @Autowired
+    ObjectMapper objectMapper;
+
     @Override
     public Integer createQuestion(Question question) {
-        return null;
+        return poolRepository.createQuestion(question);
     }
 
     @Override
     public Question getQuestionById(Integer qId) {
-        return null;
+        return poolRepository.getQuestionById(qId);
     }
 
     @Override
@@ -37,22 +42,20 @@ public class PoolServiceImpl implements PoolService {
     }
 
     @Override
-    public String createReply(ReplyRequest replyRequest) {
+    public String createReply(Reply reply) throws JsonProcessingException {
 //        check if user exists by user id -> get the user from the user microservice and get the userId from
 //        the question table in the pool service. if pool.uId == user.uId -> create reply
 //        - if not - alert
 //        - if exist -> create reply.
-        User userFromReply = replyRequest.getUser();
-        Integer userIdFromReply = userFromReply.getUserId();
-        User userFromUsers = userService.getUser(userIdFromReply);
-        Integer userIdFromUsers = userFromUsers.getUserId();
-        if (userIdFromUsers == userIdFromReply){
-            System.out.println("it's ok");
-            return "the user exists";
-        }else {
-            System.out.println("we gor problem");
-            return "no such users";
+        Integer userIdReply = reply.getUserId();
+        User user = userController.getUserById(userIdReply);
+        if (userIdReply == user.getUserId()){
+            poolRepository.createReply(reply);
+            System.out.println("ok");
+        }else{
+            System.out.println("not such user");
         }
+        return null;
     }
 
     @Override

@@ -1,9 +1,6 @@
 package com.Pool.repository;
 
-import com.Pool.model.Question;
-import com.Pool.model.ReplyRequest;
-import com.Pool.model.ReplyResponse;
-import com.Pool.model.Util;
+import com.Pool.model.*;
 import com.Pool.repository.mapper.QuestionMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -62,8 +59,9 @@ public class PoolRepositoryImpl implements PoolRepository {
     }
 
     @Override
-    public void createReply(ReplyRequest replyRequest) {
-
+    public void createReply(Reply reply) {
+        String sql = "INSERT INTO " + Util.REPLY_TABLE + " (question_id, user_id, answer_id) VALUES(?,?,?)";
+        jdbcTemplate.update(sql,reply.getQuestionId(),reply.getUserId(),reply.getAnswerId());
     }
 
     @Override

@@ -13,7 +13,7 @@ public class ReplyMapper implements RowMapper<Reply> {
         return new Reply(
                 rs.getInt("user_id"),
                 rs.getInt("question_id"),
-                rs.getString("answer_id")
+                rs.getInt("answer_id")
         );
     }
 }

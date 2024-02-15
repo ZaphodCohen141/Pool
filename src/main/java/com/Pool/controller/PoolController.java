@@ -8,6 +8,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/pool")
 public class PoolController {
@@ -36,8 +39,32 @@ public class PoolController {
     }
 
     @PostMapping(value = "/create_reply")
-    public void createReply(@RequestBody Reply reply) throws JsonProcessingException {
-        poolService.createReply(reply);
+    public String createReply(@RequestBody Reply reply) throws JsonProcessingException {
+        return poolService.createReply(reply);
     }
 
+    @DeleteMapping(value = "/delete_reply")
+    public void deleteReply(@RequestParam Integer uId){
+        poolService.deleteReply(uId);
+    }
+
+//    Return how many users choose each of the question options
+    @GetMapping(value = "/count_u_to_each_ans_of_q")
+    public ArrayList<String> getHowManyUserChooseQuestion(@RequestParam Integer qId){
+       return poolService.getHowManyUserChooseQuestion(qId);
+    }
+
+//    Return how many users answer to this question in total
+    @GetMapping(value = "/count_total_u_choose_this_q")
+    public Integer getHowManyUserAnswer(@RequestParam Integer qId){
+        System.out.println("in total, " + poolService.getHowManyUserAnswer(qId) +
+                "answer this question");
+        return poolService.getHowManyUserAnswer(qId);
+    }
+
+//    Return how many questions this user answered to
+    @GetMapping(value = "/user_ans_to_q")
+    public List<String> getAllUserResponse(@RequestParam Integer uId){
+        return poolService.getAllUserResponse(uId);
+    }
 }

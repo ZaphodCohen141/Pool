@@ -2,20 +2,21 @@ package com.Pool.repository;
 
 import com.Pool.model.Question;
 import com.Pool.model.Reply;
-import com.Pool.model.ReplyRequest;
 import com.Pool.model.ReplyResponse;
+
+import java.util.ArrayList;
 
 public interface PoolRepository {
     public Integer createQuestion(Question question);
     public Question getQuestionById(Integer qId);
     public String updateQuestionById(Integer qId, Question question);
     public String deleteQuestionById(Integer qId);
-    void createReply(Reply replyRequest);
+    void createReply(Reply reply);
 
-    void deleteReply(ReplyRequest replyRequest);
+    void deleteReply(Integer uId);
 
-    Integer getHowManyUserChooseQuestion(Integer qId);
+    ArrayList<String> getHowManyUserChooseQuestion(Integer qId);
     Integer getHowManyUserAnswer(Integer qid);
-    ReplyResponse getAllUserResponse(Integer uId);
+    ArrayList<String> getAllUserResponse(Integer uId);
     ReplyResponse getAllUserQuestion(Integer uId);
 }

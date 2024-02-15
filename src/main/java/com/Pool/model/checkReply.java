@@ -1,19 +1,21 @@
 package com.Pool.model;
 
-public class ReplyResponse {
+public class checkReply {
     private Integer uId;
     private Integer ansId;
     private Integer qId;
     private String qText;
+    private String aText;
 
-    public ReplyResponse(Integer uId, Integer ansId, Integer qId, String qText) {
+    public checkReply(Integer uId, Integer ansId, Integer qId, String qText, String aText) {
         this.uId = uId;
         this.ansId = ansId;
         this.qId = qId;
         this.qText = qText;
+        this.aText = aText;
     }
 
-    public ReplyResponse() {
+    public checkReply() {
     }
 
     public Integer getuId() {
@@ -46,5 +48,13 @@ public class ReplyResponse {
 
     public void setqText(String qText) {
         this.qText = qText;
+    }
+
+    public String getaText() {
+        return aText;
+    }
+
+    public void setaText(String aText) {
+        this.aText = aText;
     }
 }

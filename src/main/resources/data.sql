@@ -27,11 +27,18 @@ CREATE TABLE questions(
 );
 
 INSERT INTO questions (question_text,ans_1,ans_2,ans_3,ans_4)
-VALUES('Where are we going?','a. Day in, day out','b. The night is young',
-'c. Need for survival is clear','d. Just so you know we don''t');
+VALUES('What is love?','a. Oh baby, don''t hurt me','b. Don''t hurt me',
+'c. No more','d. No, I don''t know why you''re not fair'),
+('How can you say I go about things the wrong way?', 'a.I am human and I need to be loved',
+'b. Just like everybody else does', 'c.You shut your mouth','d. How can you say'),
+('Are Friends Electric?','a. Only mine''s broke down','b. And now I''ve no-one to love',
+'c. So I found out your reason', 'd. for the phone calls and smiles'),
+('Should I Stay Or Should I Go?','a. If you say that you are mine', 'b. I''ll be here till the end of time',
+'c. So you got to let me know','d. It''s always tease');
+
 
 INSERT INTO replies (question_id,user_id,answer_id)
-VALUES (1,1,2),(2,1,3),(3,1,1),(4,1,5);
+VALUES (1,1,2),(2,1,3),(3,1,1),(4,1,4);
 --CREATE TABLE a_to_q _1 (
 --    user_id int NOT NULL,
 --    q_id int NOT NULL,

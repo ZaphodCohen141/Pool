@@ -4,13 +4,14 @@ import com.Pool.UserMicroService.User;
 import com.Pool.UserMicroService.UserController;
 import com.Pool.model.Question;
 import com.Pool.model.Reply;
-import com.Pool.model.ReplyRequest;
 import com.Pool.model.ReplyResponse;
 import com.Pool.repository.PoolRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class PoolServiceImpl implements PoolService {
@@ -42,44 +43,63 @@ public class PoolServiceImpl implements PoolService {
     }
 
     @Override
-    public String createReply(Reply reply) throws JsonProcessingException {
+    public String createReply(Reply reply) {
 //        check if user exists by user id -> get the user from the user microservice and get the userId from
 //        the question table in the pool service. if pool.uId == user.uId -> create reply
 //        - if not - alert
 //        - if exist -> create reply.
-        Integer userIdReply = reply.getUserId();
-        User user = userController.getUserById(userIdReply);
-        if (userIdReply == user.getUserId()){
+        if (checkExist(reply.getUserId())){
             poolRepository.createReply(reply);
-            System.out.println("ok");
-        }else{
-            System.out.println("not such user");
+            return "Reply was submitted";
+        }else {
+            return "User is not registered";
         }
-        return null;
     }
 
     @Override
-    public void deleteReply(ReplyRequest replyRequest) {
+    public void deleteReply(Integer uId) {
+//        for user service to run with deleteUser
+        if (checkExist(uId)){
+            poolRepository.deleteReply(uId);
+        }else {
+            System.out.println("the is no user with id " + uId);
+        }
 
     }
 
     @Override
-    public Integer getHowManyUserChooseQuestion(Integer qId) {
-        return null;
+    public ArrayList<String> getHowManyUserChooseQuestion(Integer qId) {
+        return poolRepository.getHowManyUserChooseQuestion(qId);
     }
 
     @Override
     public Integer getHowManyUserAnswer(Integer qid) {
-        return null;
+        return poolRepository.getHowManyUserAnswer(qid);
     }
 
     @Override
-    public ReplyResponse getAllUserResponse(Integer uId) {
-        return null;
+    public List<String> getAllUserResponse(Integer uId) {
+        if (checkExist(uId)) {
+            return poolRepository.getAllUserResponse(uId);
+        }else {
+            System.out.println("there is no user with id " + uId);
+            return null;
+        }
     }
 
     @Override
     public ReplyResponse getAllUserQuestion(Integer uId) {
         return null;
+    }
+
+//    HELPER METHOD
+//    check if user exist
+    public Boolean checkExist(Integer userId){
+        try{
+            User user = userController.getUserById(userId);
+            return true;
+        }catch(NullPointerException e){
+            return false;
+        }
     }
 }

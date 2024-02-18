@@ -2,9 +2,10 @@ package com.Pool.repository;
 
 import com.Pool.model.Question;
 import com.Pool.model.Reply;
-import com.Pool.model.ReplyResponse;
+import com.Pool.model.UserCount;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface PoolRepository {
     public Integer createQuestion(Question question);
@@ -16,7 +17,8 @@ public interface PoolRepository {
     void deleteReply(Integer uId);
 
     ArrayList<String> getHowManyUserChooseQuestion(Integer qId);
-    Integer getHowManyUserAnswer(Integer qid);
-    ArrayList<String> getAllUserResponse(Integer uId);
-    ReplyResponse getAllUserQuestion(Integer uId);
+    Integer getHowManyUserChooseEachAnswer(Integer qid);
+    ArrayList<String> getAllUserResponses(Integer uId);
+    Integer getTotalNumberOfQuestionsForUser(Integer uId);
+    List<UserCount> getAllQuestionWithUserCount();
 }

@@ -12,8 +12,7 @@ CREATE TABLE users(
 CREATE TABLE replies(
     question_id INT NOT NULL,
     user_id INT NOT NULL,
-    answer_id INT NOT NULL,
-    PRIMARY KEY(question_id)
+    answer_id INT NOT NULL
 );
 
 CREATE TABLE questions(
@@ -38,7 +37,7 @@ VALUES('What is love?','a. Oh baby, don''t hurt me','b. Don''t hurt me',
 
 
 INSERT INTO replies (question_id,user_id,answer_id)
-VALUES (1,1,2),(2,1,3),(3,1,1),(4,1,4);
+VALUES (1,1,2),(2,1,3),(3,1,1),(4,1,4),(1,2,4),(2,2,3),(3,2,4);
 --CREATE TABLE a_to_q _1 (
 --    user_id int NOT NULL,
 --    q_id int NOT NULL,

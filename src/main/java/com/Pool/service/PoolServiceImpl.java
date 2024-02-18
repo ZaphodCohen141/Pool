@@ -4,7 +4,7 @@ import com.Pool.UserMicroService.User;
 import com.Pool.UserMicroService.UserController;
 import com.Pool.model.Question;
 import com.Pool.model.Reply;
-import com.Pool.model.ReplyResponse;
+import com.Pool.model.UserCount;
 import com.Pool.repository.PoolRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,19 +68,19 @@ public class PoolServiceImpl implements PoolService {
     }
 
     @Override
-    public ArrayList<String> getHowManyUserChooseQuestion(Integer qId) {
+    public ArrayList<String> getHowManyUserChooseEachAnswer(Integer qId) {
         return poolRepository.getHowManyUserChooseQuestion(qId);
     }
 
     @Override
-    public Integer getHowManyUserAnswer(Integer qid) {
-        return poolRepository.getHowManyUserAnswer(qid);
+    public Integer getHowManyUserAnswerToQuestion(Integer qid) {
+        return poolRepository.getHowManyUserChooseEachAnswer(qid);
     }
 
     @Override
     public List<String> getAllUserResponse(Integer uId) {
         if (checkExist(uId)) {
-            return poolRepository.getAllUserResponse(uId);
+            return poolRepository.getAllUserResponses(uId);
         }else {
             System.out.println("there is no user with id " + uId);
             return null;
@@ -88,11 +88,22 @@ public class PoolServiceImpl implements PoolService {
     }
 
     @Override
-    public ReplyResponse getAllUserQuestion(Integer uId) {
-        return null;
+    public Integer getTotalNumberOfQuestionsForUser(Integer uId) {
+        if (checkExist(uId)) {
+            return poolRepository.getTotalNumberOfQuestionsForUser(uId);
+        }else {
+            System.out.println("there is no user with id " + uId);
+            return null;
+        }
     }
 
-//    HELPER METHOD
+    @Override
+    public List<UserCount> getAllQuestionWithUserCount() {
+        return poolRepository.getAllQuestionWithUserCount();
+    }
+
+
+    //    HELPER METHOD
 //    check if user exist
     public Boolean checkExist(Integer userId){
         try{

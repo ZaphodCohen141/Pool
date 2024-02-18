@@ -2,6 +2,7 @@ package com.Pool.controller;
 
 import com.Pool.model.Question;
 import com.Pool.model.Reply;
+import com.Pool.model.UserCount;
 import com.Pool.service.PoolService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -51,20 +52,30 @@ public class PoolController {
 //    Return how many users choose each of the question options
     @GetMapping(value = "/count_u_to_each_ans_of_q")
     public ArrayList<String> getHowManyUserChooseQuestion(@RequestParam Integer qId){
-       return poolService.getHowManyUserChooseQuestion(qId);
+       return poolService.getHowManyUserChooseEachAnswer(qId);
     }
 
 //    Return how many users answer to this question in total
     @GetMapping(value = "/count_total_u_choose_this_q")
-    public Integer getHowManyUserAnswer(@RequestParam Integer qId){
-        System.out.println("in total, " + poolService.getHowManyUserAnswer(qId) +
+    public Integer getHowManyUserChooseEachAnswer(@RequestParam Integer qId){
+        System.out.println("in total, " + poolService.getHowManyUserAnswerToQuestion(qId) +
                 "answer this question");
-        return poolService.getHowManyUserAnswer(qId);
+        return poolService.getHowManyUserAnswerToQuestion(qId);
     }
 
 //    Return how many questions this user answered to
     @GetMapping(value = "/user_ans_to_q")
     public List<String> getAllUserResponse(@RequestParam Integer uId){
         return poolService.getAllUserResponse(uId);
+    }
+
+    @GetMapping(value = "/total_questions_per_user")
+    public Integer getTotalNumberOfQuestionsForUser(@RequestParam Integer uId){
+        return poolService.getTotalNumberOfQuestionsForUser(uId);
+    }
+
+    @GetMapping(value = "/get_all_q_with_u_count")
+    public List<UserCount> getAllQuestionWithUserCount(){
+        return poolService.getAllQuestionWithUserCount();
     }
 }

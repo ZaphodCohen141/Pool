@@ -3,6 +3,7 @@ package com.Pool.repository;
 import com.Pool.model.*;
 import com.Pool.repository.mapper.QuestionMapper;
 import com.Pool.repository.mapper.ResponseMapper;
+import com.Pool.repository.mapper.UserCountMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -89,51 +90,51 @@ public class PoolRepositoryImpl implements PoolRepository {
     }
 //    Return how many users answer to this question in total
     @Override
-    public Integer getHowManyUserAnswer(Integer qid) {
+    public Integer getHowManyUserChooseEachAnswer(Integer qid) {
         String sql = "SELECT COUNT(user_id) FROM " + Util.REPLY_TABLE + " WHERE question_id = ?";
         return jdbcTemplate.queryForObject(sql, Integer.class,qid);
     }
 
 //   Return the user answer to each question he submitted
-//SELECT Questions.QUESTION_ID, questions.question_text,questions.ans_1,replies.user_id
-////    FROM questions
-////    INNER JOIN replies on Questions.QUESTION_ID = replies.question_id
-////    where user_id=1
     @Override
-    public ArrayList<String> getAllUserResponse(Integer uId) {
+    public ArrayList<String> getAllUserResponses(Integer uId) {
         String sql = "SELECT " + Util.QUESTION_TABLE +".question_id, " + Util.QUESTION_TABLE + ".question_text, " +
         Util.REPLY_TABLE +".answer_id, " + Util.REPLY_TABLE + ".user_id\n" +
                 "    FROM questions\n" +
                 "    INNER JOIN replies on " + Util.QUESTION_TABLE + ".question_id = replies.question_id\n " +
                 "    WHERE user_id = ? ";
-        ArrayList<String> butifyResponse = new ArrayList<>();
-        String butify;
+        ArrayList<String> beautifyResponse = new ArrayList<>();
+        String beautify;
         List<ReplyResponse> allReplies = jdbcTemplate.query(sql,new ResponseMapper(), uId);
         for (int i = 0; i < allReplies.size(); i++) {
             sql = "SELECT (ans_" + allReplies.get(i).getAnsId() + ") FROM " +
                     Util.QUESTION_TABLE + " WHERE question_id = " + allReplies.get(i).getqId();
-            butify = "user " + uId + " choose answer " + jdbcTemplate.queryForObject(sql,String.class) +
+            beautify = "user " + uId + " choose answer " + jdbcTemplate.queryForObject(sql,String.class) +
                     ", for question " + allReplies.get(i).getqId() + ": " + allReplies.get(i).getqText();
-            butifyResponse.add(i,butify);
+            beautifyResponse.add(i,beautify);
         }
 
-        return butifyResponse;
+        return beautifyResponse;
     }
 
+//    Return how many questions this user answered to
     @Override
-    public ReplyResponse getAllUserQuestion(Integer uId) {
-        return null;
+    public Integer getTotalNumberOfQuestionsForUser(Integer uId) {
+        String sql = "SELECT COUNT(question_id) FROM " + Util.REPLY_TABLE + " WHERE user_id = ?";
+        return jdbcTemplate.queryForObject(sql,Integer.class,uId);
     }
 
-
-
-
-
-
-
-
-
-
+// Return all questions and for each question how many users choose each of the question options
+//SELECT question_id, COUNT(user_id)
+//    FROM replies
+//    GROUP BY question_id;
+    @Override
+    public List<UserCount> getAllQuestionWithUserCount() {
+        String sql = "SELECT question_id, COUNT(user_id) AS user_id" +
+                " FROM " + Util.REPLY_TABLE +
+                " GROUP BY question_id";
+        return jdbcTemplate.query(sql, new UserCountMapper());
+    }
 
 
     // HELPER METHOD

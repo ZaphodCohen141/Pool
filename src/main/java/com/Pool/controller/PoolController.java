@@ -26,7 +26,6 @@ public class PoolController {
     }
     @GetMapping(value = "/get_question")
     public Question getQuestionById(@RequestParam Integer qId){
-        System.out.println(qId);
      return poolService.getQuestionById(qId);
     }
     @PostMapping(value = "/update_question")
@@ -59,7 +58,7 @@ public class PoolController {
     @GetMapping(value = "/count_total_u_choose_this_q")
     public Integer getHowManyUserChooseEachAnswer(@RequestParam Integer qId){
         System.out.println("in total, " + poolService.getHowManyUserAnswerToQuestion(qId) +
-                "answer this question");
+                " user answer this question");
         return poolService.getHowManyUserAnswerToQuestion(qId);
     }
 
